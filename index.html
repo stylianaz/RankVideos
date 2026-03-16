@@ -310,7 +310,17 @@
       { id: 'vid22', img: 'images/image22.png', label: 'Video 22' }
     ];
 
-    let sourceItems = [...videos];
+    function shuffleArray(array) {
+    const arr = [...array];
+    for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+    }
+
+    //let sourceItems = [...videos];
+    let sourceItems = shuffleArray(videos);
     let targetItems = Array(22).fill(null);
     let dragged = null;
 
