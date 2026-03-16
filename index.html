@@ -520,30 +520,20 @@ function createPlacedCard(video, slotIndex) {
       });
     }
 
-    function finishRanking() {
-      const unfilled = targetItems.some(v => v === null);
+ function finishRanking() {
+  const rankOrder = targetItems
+    .map(v => v ? Number(v.id.replace('vid', '')) : '')
+    .join(',');
 
-      if (unfilled) {
-        highlightUnfilledSlots();
-        alert('Please fill all 22 positions before continuing.');
-        return;
-      }
+  const rankTimeMs = Date.now() - startTime;
 
-      const rankOrder = targetItems
-      .map(v => Number(v.id.replace('vid', '')))
-      .join(',');      
+  const surveyB = new URL('https://survey.uu.nl/jfe/form/SV_9Ex5qLkgkWmu45w');
+  surveyB.searchParams.set('participant_id', participantId);
+  surveyB.searchParams.set('rank_order', rankOrder);
+  surveyB.searchParams.set('rank_time_ms', rankTimeMs);
 
-      const rankTimeMs = Date.now() - startTime;
-
-
-      const surveyB = new URL('https://survey.uu.nl/jfe/form/SV_9Ex5qLkgkWmu45w');
-      surveyB.searchParams.set('participant_id', participantId);
-      surveyB.searchParams.set('rank_order', rankOrder);
-      surveyB.searchParams.set('rank_time_ms', rankTimeMs);
-
-      window.location.href = surveyB.toString();
-    }
-
+  window.location.href = surveyB.toString();
+}
     document.getElementById('doneBtn').addEventListener('click', finishRanking);
 
 document.getElementById('jumpToDoneBtn').addEventListener('click', () => {
